@@ -1,3 +1,5 @@
+// Suck!
+
 use std::io;
 
 #[allow(dead_code)]
