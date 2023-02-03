@@ -21,8 +21,59 @@ fn read_nums() -> Vec<i32> {
 }
 
 fn main() {
-    let nums = read_nums();
-    let digit = nums[0] as i64 * 10i64.pow(nums[2] as u32) / nums[1] as i64 % 10;
+    let num = read_num();
+    let mut tests: Vec<String> = vec![];
 
-    println!("{}", digit);
+    for _ in 0..num {
+        let mut str = String::new();
+        io::stdin().read_line(&mut str).unwrap();
+        str = String::from(str.trim());
+        tests.push(str);
+    }
+
+    let mut results: Vec<String> = vec![];
+
+    for str in tests {
+        let mut cp = str.clone();
+        let mut finish = false;
+
+        while cp.len() > 0 {
+            println!("Iter : {cp}");
+            if cp.starts_with("100") {
+                cp.remove(0);
+                cp.remove(0);
+                cp.remove(0);
+
+                while cp.starts_with("0") {
+                    cp.remove(0);
+                }
+
+                if !cp.starts_with("1") {
+                    finish = true;
+                    results.push(String::from("NO"));
+                    break;
+                }
+
+                cp.remove(0);
+                while cp.starts_with("1") {
+                    cp.remove(0);
+                }
+            } else if cp.starts_with("01") {
+                cp.remove(0);
+                cp.remove(0);
+            } else {
+                results.push(String::from("NO"));
+                finish = true;
+                break;
+            }
+        }
+
+        if !finish {
+            results.push(String::from("YES"));
+        }
+    }
+
+    for result in results {
+        println!("{result}");
+    }
 }
