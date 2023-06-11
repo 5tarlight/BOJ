@@ -1,2 +1,3 @@
 # BOJ
-My Baekjoon (Rust &lt;3)
+
+My Baekjoon
