@@ -1,6 +1,4 @@
 #include <iostream>
-#include <queue>
-#include <algorithm>
 
 using namespace std;
 
@@ -9,29 +7,25 @@ int main() {
     std::cin.tie(nullptr);
     std::cout.tie(nullptr);
 
-    int n, k;
-    cin >> n >> k;
+    int n;
+    cin >> n;
 
-    queue<int> q;
+    int count = 0, answer = 0;
 
-    for (int i = 1; i <= n; i++)
-        q.push(i);
+    while (count != n) {
+        answer++;
 
-    cout << "<";
+        int temp = answer;
 
-    while (!q.empty()) {
-        for (int i = 1; i < k; i++) {
-            q.push(q.front());
-            q.pop();
-        }
-
-        cout << q.front();
-        q.pop();
-
-        if (q.empty()) {
-            cout << ">";
-        } else {
-            cout << ", ";
+        while (temp) {
+            if (temp % 1000 == 666) {
+                count++;
+                break;
+            } else {
+                temp /= 10;
+            }
         }
     }
+
+    cout << answer;
 }
