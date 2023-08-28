@@ -1,60 +1,72 @@
 #include <iostream>
+#include <string>
 
 using namespace std;
 
-int graph[50][50];
-
-bool dfs(int N, int M, int x, int y) {
-    if (x < 0 || x >= N || y < 0 || y >= M)
-        return false;
-
-    if (graph[x][y] == 1) {
-        graph[x][y] = 0;
-
-        dfs(N, M, x - 1, y);
-        dfs(N, M, x, y - 1);
-        dfs(N, M, x + 1, y);
-        dfs(N, M, x, y + 1);
-
-        return true;
-    } else {
-        return false;
-    }
-}
 
 int main() {
     ios_base::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    int T;
-    cin >> T;
+    string str;
+    cin >> str;
 
-    for (int _ = 0; _ < T; _++) {
-        for (int i = 0; i < 50; i++) {
-            for (int j = 0; j < 50; j++) {
-                graph[i][j] = 0;
+    char answer[50];
+
+    int streak = 0;
+    bool impossible = false;
+    for (int i = 0; i < str.size(); i++) {
+        if (str[i] == '.') {
+            if (streak == 4) {
+                answer[i - 3] = 'A';
+                answer[i - 2] = 'A';
+                answer[i - 1] = 'A';
+                answer[i] = 'A';
+            } else if (streak == 2) {
+                answer[i - 2] = 'B';
+                answer[i - 1] = 'B';
+            } else if (streak != 0) {
+                impossible = true;
+                break;
+            }
+
+            answer[i] = '.';
+            streak = 0;
+            continue;
+        } else {
+            streak++;
+
+            if (streak == 4) {
+                answer[i - 3] = 'A';
+                answer[i - 2] = 'A';
+                answer[i - 1] = 'A';
+                answer[i] = 'A';
+                streak = 0;
+                continue;
             }
         }
+    }
 
-        int M, N, K;
+    int i = str.size() - 1;
+    if (streak == 4) {
+        answer[i - 3] = 'A';
+        answer[i - 2] = 'A';
+        answer[i - 1] = 'A';
+        answer[i] = 'A';
+        streak = 0;
+    } else if (streak == 2) {
+        answer[i - 1] = 'B';
+        answer[i] = 'B';
+        streak = 0;
+    } else {
+        impossible = true;
+    }
 
-        cin >> M >> N >> K;
-
-        for (int i = 0; i < K; i++) {
-            int x, y;
-            cin >> x >> y;
-            graph[y][x] = 1;
-        }
-
-        int result = 0;
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < M; j++) {
-                if (dfs(N, M, i, j))
-                    result++;
-            }
-        }
-
-        cout << result << '\n';
+    if (impossible)
+        cout << -1;
+    else {
+        for(int i = 0; i < str.size(); i++)
+            cout << answer[i];
     }
 }
