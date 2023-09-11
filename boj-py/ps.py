@@ -1,24 +1,32 @@
-n, r, c = map(int, input().split())
+from collections import deque
 
-answer = 0
+n, m = map(int, input().split())
+graph = []
 
-while n != 0:
-    n -= 1
+for i in range(n):
+    graph.append([])
 
-    #1|2
-    #---
-    #3|4
-    if r < 2**n and c < 2**n:
-        pass
-    elif r < 2**n and c >= 2**n:
-        answer += 2**n * 2**n
-        c -= 2**n
-    elif r >= 2**n and c < 2**n:
-        answer += 2**n * 2**n * 2
-        r -= 2**n
-    elif r >= 2**n and c >= 2**n:
-        answer += 2**n * 2**n * 3
-        r -= 2**n
-        c -= 2**n
+for _ in range(m):
+    a, b = map(int, input().split())
+    graph[a-1].append(b)
+    graph[b-1].append(a)
 
-print(answer)
+steps = []
+
+
+def bfs(s, t):
+    q = deque()
+    visited = [s]
+    q.append(q)
+    st = [0] * n
+
+    while q:
+        a = q.popleft()
+
+        for i in graph[a]:
+            if i not in visited:
+                st[i-1] = st[a-1]
+                visited.append(i)
+                q.append(i)
+
+    return sum(st)
