@@ -1,24 +1,23 @@
 #include <iostream>
-#include <algorithm>
+#include <string>
+#include <cmath>
 
 using namespace std;
 
 int main() {
-    int n;
-    cin >> n;
-    int dp[n + 1];
+    int n, m;
+    char btn[11];
+    bool ch[500'001];
 
-    dp[1] = 0;
-    for (int i = 2; i <= n; i++) {
-        if (i % 6 == 0)
-            dp[i] = min(min(dp[i / 3], dp[i - 1]), dp[i / 2]) + 1;
-        else if (i % 3 == 0)
-            dp[i] = min(dp[i / 3], dp[i - 1]) + 1;
-        else if (i % 2 == 0)
-            dp[i] = min(dp[i / 2], dp[i - 1]) + 1;
-        else
-            dp[i] = dp[i - 1] + 1;
+    cin >> n >> m;
+    for (int i = 0; i < m; i++)
+        cin >> btn[i];
+
+    string num;
+    int result;
+    int result2;
+
+    if (n != 100) {
+        
     }
-
-    cout << dp[n];
 }
