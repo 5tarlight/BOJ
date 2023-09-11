@@ -1,32 +1,13 @@
-from collections import deque
+s = input()
+t = s.split('-')
 
-n, m = map(int, input().split())
-graph = []
+answer = 0
+if s[0] == '-':
+    answer -= sum(map(int, t[0].split('+')))
+else:
+    answer += sum(map(int, t[0].split('+')))
 
-for i in range(n):
-    graph.append([])
+for p in t[1:]:
+    answer -= sum(map(int, p.split('+')))
 
-for _ in range(m):
-    a, b = map(int, input().split())
-    graph[a-1].append(b)
-    graph[b-1].append(a)
-
-steps = []
-
-
-def bfs(s, t):
-    q = deque()
-    visited = [s]
-    q.append(q)
-    st = [0] * n
-
-    while q:
-        a = q.popleft()
-
-        for i in graph[a]:
-            if i not in visited:
-                st[i-1] = st[a-1]
-                visited.append(i)
-                q.append(i)
-
-    return sum(st)
+print(answer)
