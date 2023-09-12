@@ -1,18 +1,25 @@
-from sys import stdin
+n, m = map(int, input().split())
 
-m, n = map(int, stdin.readline().rstrip().split())
-
-a = ['Missing No.']
-d = {}
-
-for i in range(m):
-    name = stdin.readline().rstrip()
-    a.append(name)
-    d[name] = i + 1
+h = []
+s = []
 
 for _ in range(n):
-    i = stdin.readline().rstrip()
-    if i.isnumeric():
-        print(a[int(i)])
-    else:
-        print(d[i])
+    h.append(input())
+for _ in range(m):
+    s.append(input())
+
+un = []
+
+if h <= s:
+    for heard in h:
+        if heard not in s:
+            un.append(heard)
+else:
+    for seen in s:
+        if seen not in h:
+            un.append(seen)
+
+print(len(un))
+
+for u in un:
+    print(u)
