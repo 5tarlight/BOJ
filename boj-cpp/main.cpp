@@ -37,6 +37,11 @@ int main() {
         for (int j = 0; j < n; j++)
             cin >> mbti[j];
 
+        if (n > 32) {
+            cout << 0 << '\n';
+            continue;
+        }
+
         int distance = 123456789;
         for (int a = 0; a < n - 2; a++) {
             for (int b = a + 1; b < n - 1; b++) {
