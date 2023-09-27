@@ -5,7 +5,6 @@ using namespace std;
 int n, s;
 int cnt = 0;
 int nums[1'000'000];
-bool visited[1'000'000];
 
 void backtrack(int x, int sum) {
     if (x == n) {
