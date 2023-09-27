@@ -1,35 +1,23 @@
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
-
-int n, s;
-int cnt = 0;
-int nums[1'000'000];
-
-void backtrack(int x, int sum) {
-    if (x == n) {
-        if (sum == s)
-            cnt++;
-        return;
-    }
-
-    backtrack(x + 1, sum);
-    backtrack(x + 1, sum + nums[x]);
-}
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    cin >> n >> s;
-    for (int i = 0; i < n; i++)
-        cin >> nums[i];
+    int perm[] = { 1, 1, 0, 0, 0 };
+    int data[] = { 1, 2, 3, 4, 5 };
 
-    backtrack(0, 0);
+    sort(perm, perm + 5);
 
-    if (s == 0)
-        cnt--;
-
-    cout << cnt;
+    do {
+        for (int i = 0; i < 5; i++) {
+            if (perm[i] == 1)
+                cout << data[i] << ' ';
+        }
+        cout << '\n';
+    } while (next_permutation(perm, perm + 5));
 }
