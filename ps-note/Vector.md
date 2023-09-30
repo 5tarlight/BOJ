@@ -23,7 +23,7 @@ vector<int> v;
 ...
 sort(v.begin(), v.end());
 
-bool found = lower_bound(v.begin(), v.end(), value);
+bool found = binary_search(v.begin(), v.end(), value);
 int index = lower_bound(v.begin(), v.end(), value) - v.begin();
 ```
 단순히 있는지 확인하는 방법, 몇번째 index에 있는 값인지 확인하는 방법이 있다.
