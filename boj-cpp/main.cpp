@@ -1,72 +1,42 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#include <queue>
 
 using namespace std;
 
-#define X first
-#define Y second
-#define INF 1'000'000'010
+int n;
+int cnt = 0;
+bool col[20];
+bool diag1[40];
+bool diag2[40];
+
+void backtrack(int d) {
+    if (d == n) {
+        cnt++;
+        return;
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (col[i] || diag1[d + i] || diag2[d - i + n - 1])
+            continue;
+
+        col[i] = true;
+        diag1[d + i] = true;
+        diag2[d - i + n - 1] = true;
+
+        backtrack(d + 1);
+
+        col[i] = false;
+        diag1[d + i] = false;
+        diag2[d - i + n - 1] = false;
+    }
+}
 
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
 
-    int v, e;
-    cin >> v >> e;
+    cin >> n;
+    backtrack(0);
 
-    vector<pair<int, int>> cost[v + 1]; // {cost, vertex}
-    int d[v + 1];
-    int pre[v + 1];
-    fill(d, d + v + 1, INF);
-
-    while (e--) {
-        int u, v, w;
-        cin >> u >>  v >> w;
-        cost[u].emplace_back(w, v);
-    }
-
-    int start, end;
-    cin >> start >> end;
-
-    d[start] = 0;
-    priority_queue<
-            pair<int, int>,
-            vector<pair<int, int>>,
-            greater<>
-    > pq;
-    pq.push({d[start], start});
-
-    while (!pq.empty()) {
-        pair<int, int> cur = pq.top();
-        pq.pop();
-
-        if (d[cur.Y] != cur.X)
-            continue;
-
-        for (auto &nxt : cost[cur.Y]) {
-            if (d[nxt.Y] <= d[cur.Y] + nxt.X)
-                continue;
-
-            d[nxt.Y] = d[cur.Y] + nxt.X;
-            pq.push({d[nxt.Y], nxt.Y});
-            pre[nxt.Y] = cur.Y;
-        }
-    }
-
-    cout << d[end] << '\n';
-    vector<int> path;
-    int cur = end;
-    while (cur != start) {
-        path.push_back(cur);
-        cur = pre[cur];
-    }
-    path.push_back(cur);
-    reverse(path.begin(), path.end());
-
-    cout << path.size() << '\n';
-    for (auto &x : path)
-        cout << x << ' ';
+    cout << cnt;
 }
