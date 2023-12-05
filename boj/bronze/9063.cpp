@@ -10,8 +10,8 @@ int main() {
     int n;
     int xl = 123456;
     int yl = 123456;
-    int xr = -1;
-    int yr = -1;
+    int xr = -123456;
+    int yr = -123456;
     cin >> n;
 
     while (n--) {
