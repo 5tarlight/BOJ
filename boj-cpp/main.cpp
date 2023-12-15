@@ -9,22 +9,11 @@ int main() {
     cout.tie(nullptr);
     cin.tie(nullptr);
 
-    int ac, bc;
-    cin >> ac >> bc;
-    map<int, bool> a;
+    string str;
+    cin >> str;
+    int l = str.length();
 
-    for (int i = 0; i < ac; i++) {
-        int n;
-        cin >> n;
-        a[n] = true;
+    for (int i = 0; i < l; i++) {
+        for (int j = i;)
     }
-    int cnt = ac + bc;
-    for (int i = 0; i < bc; i++) {
-        int n;
-        cin >> n;
-        if (a.find(n) != a.end())
-            cnt -= 2;
-    }
-
-    cout << cnt;
 }
