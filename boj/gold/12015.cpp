@@ -1,32 +1,46 @@
 #include <iostream>
-#include <algorithm>
+#include <vector>
 
 using namespace std;
 
+int bsearch(vector<int> &a, int k) {
+    int s = 0;
+    int e = a.size() - 1;
+
+    while (s < e) {
+        int mid = s + (e - s) / 2;
+
+        if (a[mid] >= k)
+            e = mid;
+        else
+            s = mid + 1;
+    }
+
+    return e;
+}
+
 int main() {
     ios::sync_with_stdio(false);
-    cin.tie(nullptr);
     cout.tie(nullptr);
+    cin.tie(nullptr);
 
     int n;
     cin >> n;
-    int nums[n + 1];
-    vector<int> l;
+    vector<int> a(n);
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
 
-    for (int i = 0; i < n; i++) {
-        cin >> nums[i];
-    }
+    vector<int> ans;
+    ans.push_back(a[0]);
 
-    for (int i = 0; i < n; i++) {
-        if (l.empty())
-            l.push_back(nums[i]);
+    for (int i = 1; i < n; i++) {
+        if (a[i] > ans.back())
+            ans.push_back(a[i]);
         else {
-            if (l[l.size() - 1] < nums[i])
-                l.push_back(nums[i]);
-            else
-                *(lower_bound(l.begin(), l.end(), nums[i])) = nums[i];
+            int idx = bsearch(ans, a[i]);
+            ans[idx] = a[i];
         }
     }
 
-    cout << l.size();
+    cout << ans.size();
 }
