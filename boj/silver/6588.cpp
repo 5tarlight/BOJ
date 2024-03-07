@@ -29,18 +29,12 @@ int main() {
             break;
         }
 
-        bool found = false;
         for (int p : primes) {
             if (!isNotPrime[n - p]) {
                 cout << n << " = " << p << " + " << n - p << '\n';
-                found = true;
                 break;
             }
 
-        }
-
-        if (!found) {
-            cout << "Goldbach's conjecture is wrong.\n";
         }
     }
 }
