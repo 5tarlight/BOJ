@@ -29,8 +29,6 @@ int main() {
             continue;
         }
 
-        sort(graph[i].begin(), graph[i].end());
-
         for (int nxt : graph[i])
             dp[nxt] += dp[i] / graph[i].size();
     }
