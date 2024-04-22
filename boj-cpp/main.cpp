@@ -1,6 +1,6 @@
 #include <iostream>
-#include <string>
-#include <map>
+#include <algorithm>
+#include <vector>
 
 using namespace std;
 
@@ -11,23 +11,22 @@ int main() {
 
     int n;
     cin >> n;
-    map<string, int> cnt;
+    int a[n];
     for (int i = 0; i < n; i++) {
-        string s;
-        cin >> s;
-        cnt[s]++;
+        cin >> a[i];
     }
 
-    for (int i = 0; i < n - 1; i++) {
-        string s;
-        cin >> s;
-        cnt[s]--;
-    }
+    vector<int> lis;
+    lis.push_back(a[0]);
 
-    for (auto& [key, value] : cnt) {
-        if (value != 0) {
-            cout << key;
-            break;
+    for (int i = 1; i < n; i++) {
+        if (lis.back() < a[i]) {
+            lis.push_back(a[i]);
+        } else {
+            auto it = lower_bound(lis.begin(), lis.end(), a[i]);
+            *it = a[i];
         }
     }
+
+    cout << lis.size();
 }
