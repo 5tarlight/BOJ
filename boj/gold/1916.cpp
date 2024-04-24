@@ -1,55 +1,49 @@
 #include <iostream>
-#include <algorithm>
-#include <queue>
 #include <vector>
+#include <queue>
+#include <algorithm>
 
 using namespace std;
 
-#define X first
-#define Y second
-#define INF 1'000'000
+#define INF 1e9
 
 int main() {
-    ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
+    ios_base::sync_with_stdio(false);
 
-    int n, m, start, end;
+    int n, m;
     cin >> n >> m;
-    vector<pair<int, int>> graph[n + 1]; // {cost, index}
-    int d[n + 1];
-    fill(d, d + n + 1, INF);
+    int graph[n + 1][n + 1];
+    for (int i = 1; i <= n; i++)
+        fill(graph[i], graph[i] + n + 1, INF);
 
     while (m--) {
-        int s, e, c;
-        cin >> s >> e >> c;
-        graph[s].push_back({c, e});
+        int a, b, c;
+        cin >> a >> b >> c;
+        if (graph[a][b] > c)
+            graph[a][b] = c;
     }
-    cin >> start >> end;
-    d[start] = 0;
 
-    priority_queue<
-        pair<int, int>,
-        vector<pair<int, int>>,
-        greater<>
-    > pq;
-    pq.push({d[start], start});
+    int s, e;
+    cin >> s >> e;
+    int dist[n + 1];
+    fill(dist, dist + n + 1, INF);
+    dist[s] = 0;
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
+    pq.push({0, s});
 
     while (!pq.empty()) {
-        auto cur = pq.top();
+        auto [cost, node] = pq.top();
         pq.pop();
 
-        if (d[cur.Y] != cur.X)
-            continue;
-
-        for (auto &nxt : graph[cur.Y]) {
-            if (d[nxt.Y] <= d[cur.Y] + nxt.X)
-                continue;
-
-            d[nxt.Y] = d[cur.Y] + nxt.X;
-            pq.push({d[nxt.Y], nxt.Y});
+        for (int i = 1; i <= n; i++) {
+            if (dist[i] > dist[node] + graph[node][i]) {
+                dist[i] = dist[node] + graph[node][i];
+                pq.push({dist[i], i});
+            }
         }
     }
 
-    cout << d[end];
+    cout << dist[e];
 }
