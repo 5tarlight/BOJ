@@ -1,47 +1,40 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 using namespace std;
 
 int main() {
-    ios::sync_with_stdio(false);
-    cout.tie(nullptr);
     cin.tie(nullptr);
+    cout.tie(nullptr);
+    ios_base::sync_with_stdio(false);
 
     int n;
     cin >> n;
-    vector<pair<int, int>> a;
-    vector<int> pos;
-    vector<int> ans;
+    pair<int, int> a[n];
+    for (int i = 0; i < n; i++)
+        cin >> a[i].first >> a[i].second;
+    sort(a, a + n);
 
-    for (int i = 0; i < n; i++) {
-        int x, y;
-        cin >> x >> y;
-        a.emplace_back(x, y);
-    }
-
-    sort(a.begin(), a.end());
-    ans.push_back(a.front().second);
-    pos.push_back(0);
-
+    vector<int> lis;
+    int pos[n];
+    lis.push_back(a[0].second);
+    pos[0] = 0;
     for (int i = 1; i < n; i++) {
-        int nxt = a[i].second;
-
-        if (ans.back() < nxt) {
-            ans.push_back(nxt);
-            pos.push_back(ans.size() - 1);
+        if (lis.back() < a[i].second) {
+            lis.push_back(a[i].second);
+            pos[i] = lis.size() - 1;
         } else {
-            int idx = lower_bound(ans.begin(), ans.end(), nxt) - ans.begin();
-            ans[idx] = nxt;
-            pos.push_back(idx);
+            int idx = lower_bound(lis.begin(), lis.end(), a[i].second) - lis.begin();
+            lis[idx] = a[i].second;
+            pos[i] = idx;
         }
     }
 
-    cout << n - ans.size() << '\n';
+    cout << n - lis.size() << '\n';
 
-    int target = ans.size() - 1;
     vector<int> removes;
+    int target = lis.size() - 1;
     for (int i = n - 1; i >= 0; i--) {
         if (pos[i] == target)
             target--;
