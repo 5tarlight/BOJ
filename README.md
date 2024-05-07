@@ -2,7 +2,7 @@
 
 My BOJ solve note!
 
-[![Solved.ac Profile](http://mazassumnida.wtf/api/generate_badge?boj=5tarlight)](https://solved.ac/5tarlight)
+[![Solved.ac Profile](https://solvedac-cards-starcea.paring.moe/profile/5tarlight)](https://solved.ac/5tarlight)
 
 ## Project Structure
 - boj : My correct answers. Categorized by tier and competition. filename is the number of problem.
