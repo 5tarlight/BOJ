@@ -2,7 +2,7 @@
 
 My BOJ solve note!
 
-[![Solved.ac Profile](https://solvedac-cards-starcea.paring.moe/profile/5tarlight?size=400)](https://solved.ac/5tarlight)
+[![Solved.ac Profile](https://solvedac-cards-starcea.paring.moe/profile/5tarlight?size=200)](https://solved.ac/5tarlight)
 [![Solved.ac Profile](https://solvedac-cards-starcea.paring.moe/problems/5tarlight)](https://solved.ac/5tarlight)
 [![Solved.ac Profile](https://solvedac-cards-starcea.paring.moe/tags/5tarlight)](https://solved.ac/5tarlight)
 
