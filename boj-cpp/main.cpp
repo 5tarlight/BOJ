@@ -2,39 +2,45 @@
 
 using namespace std;
 
-int parents[3000];
-pair<int, int> loc[3000];
-int range[3000];
+#define LEN 1000001
+typedef long long ll;
 
-void init(int n) {
-    for (int i = 0; i < n; i++)
-        parents[i] = i;
+ll a[LEN];
+ll tree[4 * LEN];
+
+void init(int node, int s, int e) {
+    if (s == e) {
+        tree[node] = a[s];
+        return;
+    }
+
+    int mid = (s + e) / 2;
+    init(2 * node, s, mid);
+    init(2 * node + 1, mid + 1, e);
+    tree[node] = tree[2 * node] + tree[2 * node + 1];
 }
 
-int find(int x) {
-    if (parents[x] == x)
-        return x;
-    else
-        return parents[x] = find(parents[x]);
+ll query(int node, int s, int e, int l, int r) {
+    if (e < l || s > r) return 0;
+    if (s >= l && e <= r) return tree[node];
+
+    int mid = (s + e) / 2;
+    ll left = query(node * 2, s, mid, l, r);
+    ll right = query(node * 2 + 1, mid + 1, e, l, r);
+    return left + right;
 }
 
-void uni(int x, int y) {
-    int px = find(x);
-    int py = find(y);
-    if (px == py) return;
+void update(int node, int s, int e, int idx, ll val) {
+    if (idx < s || idx > e) return;
+    if (s == e) {
+        tree[node] = val;
+        return;
+    }
 
-    parents[px] = py;
-}
-
-bool isConnected(int i, int j) {
-    auto l1 = loc[i];
-    auto l2 = loc[j];
-    int dx = l1.first - l2.first;
-    int dy = l1.second - l2.second;
-    int dist = dx * dx + dy * dy;
-    int r = range[i] + range[j];
-
-    return dist <= r * r;
+    int mid = (s + e) / 2;
+    update(node * 2, s, mid, idx, val);
+    update(node * 2 + 1, mid + 1, e, idx, val);
+    tree[node] = tree[node * 2] + tree[node * 2 + 1];
 }
 
 int main() {
@@ -42,34 +48,22 @@ int main() {
     cout.tie(nullptr);
     ios_base::sync_with_stdio(false);
 
-    int t;
-    cin >> t;
-    while (t--) {
-        int n;
-        cin >> n;
-        init(n);
-        for (int i = 0; i < n; i++) {
-            int a, b, c;
-            cin >> a >> b >> c;
-            loc[i] = { a, b };
-            range[i] = c;
-        }
+    int n, m, k;
+    cin >> n >> m >> k;
+    m += k;
 
-        for (int i = 0; i < n - 1; i++)
-            for (int j = i + 1; j < n; j++)
-                if (isConnected(i, j))
-                    uni(i, j);
+    for (int i = 0; i < n; i++)
+        cin >> a[i];
 
-        bool visited[3000] = { false, };
-        int ans = 0;
-        for (int i = 0; i < n; i++) {
-            int p = find(i);
-            if (!visited[p]) {
-                ans++;
-                visited[p] = true;
-            }
-        }
+    init(1, 0, n - 1);
 
-        cout << ans << '\n';
+    while (m--) {
+        ll op, x, y;
+        cin >> op >> x >> y;
+
+        if (op == 1)
+            update(1, 0, n - 1, x - 1, y);
+        else
+            cout << query(1, 0, n - 1, x - 1, y - 1) << '\n';
     }
 }

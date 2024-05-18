@@ -1,76 +1,69 @@
 #include <iostream>
-#include <vector>
-#include <cmath>
 
 using namespace std;
 
-void init(vector<long long> &a, vector<long long> &tree, int node, int start, int end) {
-    if (start == end) {
-        tree[node] = a[start];
-    } else {
-        init(a, tree, node * 2, start, (start + end) / 2);
-        init(a, tree, node * 2 + 1, (start + end) / 2 + 1, end);
-        tree[node] = tree[node * 2] + tree[node * 2 + 1];
-    }
-}
+#define LEN 1000001
+typedef long long ll;
 
-long long query(vector<long long> &tree, int node, int start, int end, int left, int right) {
-    if (left > end || right < start)
-        return 0;
-    if (left <= start && end <= right)
-        return tree[node];
+ll a[LEN];
+ll tree[4 * LEN];
 
-    long long lsum = query(tree, node * 2, start, (start + end) / 2, left, right);
-    long long rsum = query(tree, node * 2 + 1, (start + end) / 2 + 1, end, left, right);
-    return lsum + rsum;
-}
-
-void update(vector<long long> &a, vector<long long> &tree, int node, int start, int end, int index, long long val) {
-    if (index < start || index > end)
+void init(int node, int s, int e) {
+    if (s == e) {
+        tree[node] = a[s];
         return;
-    if (start == end) {
-        a[index] = val;
+    }
+
+    int mid = (s + e) / 2;
+    init(2 * node, s, mid);
+    init(2 * node + 1, mid + 1, e);
+    tree[node] = tree[2 * node] + tree[2 * node + 1];
+}
+
+ll query(int node, int s, int e, int l, int r) {
+    if (e < l || s > r) return 0;
+    if (s >= l && e <= r) return tree[node];
+
+    int mid = (s + e) / 2;
+    ll left = query(node * 2, s, mid, l, r);
+    ll right = query(node * 2 + 1, mid + 1, e, l, r);
+    return left + right;
+}
+
+void update(int node, int s, int e, int idx, ll val) {
+    if (idx < s || idx > e) return;
+    if (s == e) {
         tree[node] = val;
         return;
     }
-    update(a, tree,node * 2, start, (start + end) / 2, index, val);
-    update(a, tree,node * 2 + 1, (start + end) / 2 + 1, end, index, val);
+
+    int mid = (s + e) / 2;
+    update(node * 2, s, mid, idx, val);
+    update(node * 2 + 1, mid + 1, e, idx, val);
     tree[node] = tree[node * 2] + tree[node * 2 + 1];
 }
 
 int main() {
-    ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
+    ios_base::sync_with_stdio(false);
 
     int n, m, k;
     cin >> n >> m >> k;
-    vector<long long> a(n);
-    int h = (int)ceil(log2(n));
-    int tree_size = (1 << (h+1));
-    vector<long long> tree(tree_size);
     m += k;
 
-    for (int i=0; i<n; i++)
+    for (int i = 0; i < n; i++)
         cin >> a[i];
 
-    init(a, tree, 1, 0, n-1);
+    init(1, 0, n - 1);
 
     while (m--) {
-        int op;
-        cin >> op;
+        ll op, x, y;
+        cin >> op >> x >> y;
 
-        if (op == 1) {
-            int index;
-            long long val;
-            cin >> index >> val;
-
-            update(a, tree, 1, 0, n - 1, index - 1, val);
-        } else if (op == 2) {
-            int left, right;
-            cin >> left >> right;
-
-            cout << query(tree, 1, 0, n - 1, left - 1, right - 1) << '\n';
-        }
+        if (op == 1)
+            update(1, 0, n - 1, x - 1, y);
+        else
+            cout << query(1, 0, n - 1, x - 1, y - 1) << '\n';
     }
 }
