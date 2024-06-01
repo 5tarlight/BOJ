@@ -1,31 +1,60 @@
 #include <iostream>
 #include <algorithm>
+#include <vector>
 
 using namespace std;
+
+int parents[50001];
+int depth[50001];
+vector<int> graph[50001];
+int n;
+
+int lca(int a, int b) {
+    if (depth[a] < depth[b])
+        swap(a, b);
+
+    while (depth[a] != depth[b])
+        a = parents[a];
+
+    while (a != b) {
+        a = parents[a];
+        b = parents[b];
+    }
+
+    return a;
+}
+
+void init(int node, int p) {
+    parents[node] = p;
+    depth[node] = depth[p] + 1;
+
+    for (int i = 0; i < graph[node].size(); i++) {
+        if (p == graph[node][i])
+            continue;
+        init(graph[node][i], node);
+    }
+}
 
 int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
     ios_base::sync_with_stdio(false);
 
-    int t;
-    cin >> t;
-    while (t--) {
-        int a[4];
-        cin >> a[0] >> a[1] >> a[2] >> a[3];
-        sort(a, a + 4);
+    cin >> n;
+    for (int i = 0; i < n - 1; i++) {
+        int a, b;
+        cin >> a >> b;
+        graph[a].push_back(b);
+        graph[b].push_back(a);
+    }
 
-        if (
-            (a[0] == 0 && a[1] == 1 && a[2] == 2 && a[3] == 3) ||
-            (a[0] == 0 && a[1] == 2 && a[2] == 4 && a[3] == 6) ||
-            (a[0] == 0 && a[1] == 1 && a[2] == 4 && a[3] == 5) ||
-            (a[0] == 0 && a[1] == 1 && a[2] == 2 && a[3] == 3) ||
-            (a[0] == 2 && a[1] == 3 && a[2] == 6 && a[3] == 7) ||
-            (a[0] == 1 && a[1] == 3 && a[2] == 5 && a[3] == 7) ||
-            (a[0] == 4 && a[1] == 5 && a[2] == 6 && a[3] == 7)
-        )
-            cout << "YES\n";
-        else
-            cout << "NO\n";
+    init(1, 0);
+
+    int m;
+    cin >> m;
+    while (m--) {
+        int a, b;
+        cin >> a >> b;
+        cout << lca(a, b) << '\n';
     }
 }

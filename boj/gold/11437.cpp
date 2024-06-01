@@ -1,39 +1,37 @@
 #include <iostream>
-#include <vector>
 #include <algorithm>
+#include <vector>
 
 using namespace std;
 
-typedef pair<int, int> p;
-
-vector<int> adj[100001];
+int parents[50001];
+int depth[50001];
+vector<int> graph[50001];
 int n;
-int parent[100001];
-int depth[100001];
 
 int lca(int a, int b) {
     if (depth[a] < depth[b])
         swap(a, b);
 
     while (depth[a] != depth[b])
-        a = parent[a];
+        a = parents[a];
 
     while (a != b) {
-        a = parent[a];
-        b = parent[b];
+        a = parents[a];
+        b = parents[b];
     }
 
     return a;
 }
 
-void init(int node, int pp) {
-    parent[node] = pp;
-    depth[node] = depth[pp] + 1;
+void init(int node, int p) {
+    parents[node] = p;
+    depth[node] = depth[p] + 1;
 
-    for (int i = 0; i < adj[node].size(); i++) {
-        int next = adj[node][i];
-        if (next == pp) continue;
-        init(next, node);
+    for (int i = 0; i < graph[node].size(); i++) {
+        if (p == graph[node][i])
+            continue;
+        init(graph[node][i], node);
     }
 }
 
@@ -46,8 +44,8 @@ int main() {
     for (int i = 0; i < n - 1; i++) {
         int a, b;
         cin >> a >> b;
-        adj[a].push_back(b);
-        adj[b].push_back(a);
+        graph[a].push_back(b);
+        graph[b].push_back(a);
     }
 
     init(1, 0);
