@@ -1,11 +1,10 @@
 #include <iostream>
-#include <map>
-#include <algorithm>
+#include <unordered_map>
 
 using namespace std;
 
-map<string, string> parents;
-map<string, int> sizes;
+unordered_map<string, string> parents;
+unordered_map<string, int> sizes;
 
 string find(string x) {
     if (parents[x] == x) {
