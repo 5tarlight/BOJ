@@ -1,50 +1,37 @@
-n = int(input())
-nums = list(map(int, input().split()))
+import sys
 
-cost = 0
+N = int(sys.stdin.readline())
+a = list(map(int, sys.stdin.readline().split())) + [0, 0]
+ans = 0
 
-while sum(nums) != 0:
-    for i in range(len(nums)):
-        if i < len(nums) - 2:
-            if nums[i + 1] > 0 and nums[i + 2] > 0:
-                if nums[i + 1] <= nums[i + 2]:
-                    value = min(nums[i:i + 3])
-                    cost += 7 * value
-                    nums[i] -= value
-                    nums[i + 1] -= value
-                    nums[i + 2] -= value
+for i in range(N):
+    if a[i + 1] > a[i + 2]:
+        cnt = min(a[i], a[i + 1] - a[i + 2])
+        ans += 5 * cnt
 
-                    value = min(nums[i], nums[i + 1])
-                    cost += 5 * value
-                    nums[i] -= value
-                    value[i + 1] -= value
-                else:
-                    value = min(nums[i], nums[i + 1] - nums[i + 2])
-                    cost += 5 * value
-                    nums[i] -= value
-                    nums[i + 1] -= value
+        a[i] -= cnt
+        a[i + 1] -= cnt
 
-                    value = min(nums[i:i + 3])
-                    cost += 7 * value
-                    nums[i] -= value
-                    nums[i + 1] -= value
-                    nums[i + 2] -= value
-            elif nums[i + 1] > 0:
-                value = min(nums[i], nums[i + 1])
-                cost += 5 * value
-                nums[i] -= value
-                nums[i + 1] -= value
-        elif i < len(nums) - 1:
-            if nums[i + 1] > 0:
-                value = min(nums[i], nums[i + 1])
-                cost += 5 * value
-                nums[i] -= value
-                nums[i + 1] -= value
-            else:
-                cost += 3 * nums[i]
-                nums[i] = 0
-        else:
-            cost += 3 * nums[i]
-            nums[i] = 0
+        cnt = min(a[i:i+3])
+        ans += 7 * cnt
 
-print(cost)
+        a[i] -= cnt
+        a[i + 1] -= cnt
+        a[i + 2] -= cnt
+    else:
+        cnt = min(a[i:i+3])
+        ans += 7 * cnt
+
+        a[i] -= cnt
+        a[i + 1] -= cnt
+        a[i + 2] -= cnt
+
+        cnt = min(a[i:i+2])
+        ans += 5 * cnt
+
+        a[i] -= cnt
+        a[i + 1] -= cnt
+    ans += 3 * a[i]
+    a[i] = 0
+
+print(ans)
