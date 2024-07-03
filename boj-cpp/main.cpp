@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 
 using namespace std;
 
@@ -7,34 +8,26 @@ int main() {
     cout.tie(nullptr);
     ios_base::sync_with_stdio(false);
 
-    int n;
-    cin >> n;
-    long long dp[n + 1];
+    int n, k;
+    cin >> n >> k;
+    queue<int> q;
 
-    if (n == 2) {
-        cout << 3;
-        return 0;
-    } else if (n & 1) {
-        cout << 0;
-        return 0;
-    }
+    for (int i = 1; i <= n; i++)
+        q.push(i);
 
-    dp[0] = 1;
-    dp[1] = 0;
-    dp[2] = 3;
-    dp[3] = 0;
-
-    for (int i = 4; i <= n; i++) {
-        if (i & 1) {
-            dp[i] = 0;
-            continue;
+    cout << '<';
+    while (!q.empty()) {
+        for (int i = 0; i < k - 1; i++) {
+            int c = q.front();
+            q.pop();
+            q.push(c);
         }
 
-        dp[i] = dp[i - 2] * 3;
-        for (int j = i - 4; j >= 0; j -= 2) {
-            dp[i] += dp[j] * 2;
-        }
-    }
+        cout << q.front();
+        q.pop();
 
-    cout << dp[n];
+        if (!q.empty())
+            cout << ", ";
+    }
+    cout << '>';
 }
