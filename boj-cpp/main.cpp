@@ -65,8 +65,9 @@ int main() {
     y.erase(unique(y.begin(), y.end()), y.end());
 
     for (auto &i : a) {
-        i.y = lower_bound(x.begin(), x.end(), i.x) - x.begin();
-        i.x = lower_bound(y.begin(), y.end(), i.y) - y.begin();
+        i.x = lower_bound(x.begin(), x.end(), i.x) - x.begin();
+        i.y = lower_bound(y.begin(), y.end(), i.y) - y.begin();
+        swap(i.x, i.y);
     }
     sort(a, a + n);
 
