@@ -42,4 +42,5 @@ bin/
 .DS_Store
 .idea/
 
-/ps-note/.obsidian/
+ps-note/.obsidian/
+cmake-build-debug/
