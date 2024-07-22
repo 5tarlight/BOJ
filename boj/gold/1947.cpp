@@ -6,6 +6,7 @@ int main() {
     int n;
     cin >> n;
     long long dp[n + 1];
+    dp[1] = 0;
     dp[2] = 1;
     dp[3] = 2;
 
