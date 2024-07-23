@@ -1,69 +1,44 @@
 #include <iostream>
-#include <vector>
-#include <queue>
+#include <string>
+#include <algorithm>
 #include <cmath>
-#include <cstdio>
 
 using namespace std;
 
-int parents[1001];
+string nth_palindrome(int64_t N) {
+    if (N == 1) {
+        return "0";
+    }
+    N--;
 
-int find(int x) {
-    if (parents[x] == x) return x;
-    else return parents[x] = find(parents[x]);
-}
+    int length = 1;
+    int64_t count = 9;
 
-void unite(int a, int b) {
-    int pa = find(a);
-    int pb = find(b);
-    if (pa != pb)
-        parents[pa] = pb;
-}
+    while (N >= count) {
+        N -= count;
+        length++;
+        count = 9 * pow(10, (length - 1) / 2);
+    }
 
-int n, m;
-pair<long long, long long> loc[1000];
+    int64_t half = pow(10, (length - 1) / 2) + N;
+    string half_str = to_string(half);
 
-double getDist(int a, int b) {
-    long long dx = loc[a].first - loc[b].first;
-    long long dy = loc[a].second - loc[b].second;
-    return sqrt(dx * dx + dy * dy);
+    string palindrome = half_str;
+    if (length % 2 == 1) {
+        half_str.pop_back();
+    }
+    reverse(half_str.begin(), half_str.end());
+    palindrome += half_str;
+
+    return palindrome;
 }
 
 int main() {
-    cin >> n >> m;
-    for (int i = 1; i <= n; i++)
-        parents[i] = i;
-    for (int i = 0; i < n; i++)
-        cin >> loc[i].first >> loc[i].second;
+    int64_t N;
+    cin >> N;
 
-    priority_queue<
-        pair<double, pair<int, int>>,
-        vector<pair<double, pair<int, int>>>,
-        greater<>
-    > pq;
+    cout << nth_palindrome(N);
 
-    for (int i = 0; i < n; i++)
-        for (int j = i + 1; j < n; j++)
-            pq.push({ getDist(i, j), {  i + 1, j + 1 }});
 
-    while (m--) {
-        int a, b;
-        cin >> a >> b;
-        unite(a, b);
-    }
-
-    double ans = 0;
-    while (!pq.empty()) {
-        auto [cost, p] = pq.top();
-        auto [a, b] = p;
-        pq.pop();
-
-        if (find(a) == find(b))
-            continue;
-
-        ans += cost;
-        unite(a, b);
-    }
-
-    printf("%.2f", ans);
+    return 0;
 }
