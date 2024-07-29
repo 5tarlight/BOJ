@@ -1,30 +1,22 @@
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
-vector<int> adj[500001];
-vector<int> rev[500001];
-bool visited[500001];
-int n, m, x;
-int ansA, ansB;
+typedef __float128 llf;
+typedef __int128 lld;
+typedef long double lf;
+llf pi = 3.1415926535897932384626Q;
 
-void cntUpper(int cur) {
-    ansA++;
-    for (int nxt : adj[cur]) {
-        if (visited[nxt]) continue;
-        visited[nxt] = true;
-        cntUpper(nxt);
-    }
-}
+llf sin(llf a) {
+    a -= lld(a / pi) * pi;
+    llf r = a;
+    llf x = a;
+    llf f = -a * a;
 
-void cntLower(int cur) {
-    ansB++;
-    for (int nxt : rev[cur]) {
-        if (visited[nxt]) continue;
-        visited[nxt] = true;
-        cntLower(nxt);
-    }
+    for (llf d = 2; d < 30; d += 2)
+        r += x *= f / (d * (d + 1));
+
+    return r;
 }
 
 int main() {
@@ -32,17 +24,26 @@ int main() {
     cout.tie(nullptr);
     ios_base::sync_with_stdio(false);
 
-    cin >> n >> m >> x;
-    while (m--) {
-        int a, b;
-        cin >> a >> b;
-        adj[b].push_back(a);
-        rev[a].push_back(b);
+    pi *= 2;
+    lf a, b, c;
+    cin >> a >> b >> c;
+
+    llf A = a;
+    llf B = b;
+    llf C = c;
+    llf U = 1000000;
+    llf D = 0.5;
+    llf l = (C - B) / A;
+    llf r = (C + B) / A;
+    int t = 80;
+
+    while (t--) {
+        llf mid = (l + r) / 2;
+        llf V = A * mid + b * sin(mid);
+
+        (V < C ? l : r) = mid;
     }
 
-    visited[x] = true;
-    cntUpper(x);
-    cntLower(x);
-
-    cout << ansA << ' ' << n - ansB + 1;
+    auto ans = lf(lld(U * r + D) / U);
+    cout << ans;
 }
