@@ -1,34 +1,15 @@
-import sys
-
-def is_digit(ch):
-    return '0' <= ch <= '9'
-
-input = sys.stdin.readline
-
-m = int(data[0])
-strings = data[1:]
-
+cards = input().split(',')
+a = list(map(lambda s: (int(s[0], 16), s[1] == 'b'), cards))
 ans = []
-for s in strings:
-    num = 0
-    i = 0
-    while i < len(s):
-        if not is_digit(s[i]):
-            i += 1
-            continue
 
-        if s[i] == '0' and i < len(s) - 1 and is_digit(s[i + 1]):
-            i += 1
-            continue
+for i in range(len(a)):
+    for j in range(i + 1, len(a)):
+        ans.append((a[i], a[j]))
 
-        while i < len(s) and is_digit(s[i]):
-            num = 10 * num + int(s[i])
-            i += 1
+def cmp(p1, p2):
+    (n11, c11), (n12, c12) = p1
+    (n21, c21), (n22, c22) = p2
 
-        ans.append(num)
-        num = 0
+    print(p1, p2)
 
 ans.sort()
-
-for v in ans:
-    print(v)
