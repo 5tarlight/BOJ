@@ -1,20 +1,34 @@
-import math
 import sys
+
+def is_digit(ch):
+    return '0' <= ch <= '9'
 
 input = sys.stdin.readline
 
-n = int(input())
-a = list(map(int, input().split()))
+m = int(data[0])
+strings = data[1:]
 
-s = [0]
-for i in range(n * 2):
-    s.append(s[-1] + a[i % n])
+ans = []
+for s in strings:
+    num = 0
+    i = 0
+    while i < len(s):
+        if not is_digit(s[i]):
+            i += 1
+            continue
 
-ans = 0
+        if s[i] == '0' and i < len(s) - 1 and is_digit(s[i + 1]):
+            i += 1
+            continue
 
-for i in range(n - 1):
-    for j in range(1, n + 1):
-        if s[j + i] < s[j - 1]:
-            ans += math.ceil(abs(s[j + i] - s[j - 1]) / s[n])
+        while i < len(s) and is_digit(s[i]):
+            num = 10 * num + int(s[i])
+            i += 1
 
-print(ans)
+        ans.append(num)
+        num = 0
+
+ans.sort()
+
+for v in ans:
+    print(v)
