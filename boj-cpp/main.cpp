@@ -1,44 +1,29 @@
 #include <iostream>
-#include <map>
-#include <algorithm>
 
 using namespace std;
-
-long long a[1000000];
 
 int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
     ios_base::sync_with_stdio(false);
 
-    int n, k;
-    cin >> n >> k;
+    int n;
+    cin >> n;
+    int yes[n + 2];
+    yes[0] = 0;
+    yes[1] = 1;
+    for (int i = 2; i <= n + 1; i++) {
+        int op, x, y;
+        cin >> op >> x >> y;
+        int cnt = yes[y] - yes[x - 1];
+        int dist = y - x + 1;
 
-    map<int, int> cache;
-    while (k--) {
-        int x;
-        cin >> x;
-        cache[x]++;
-    }
-
-    for (auto [nxt, cnt] : cache) {
-        int i = 0;
-        while (i < n) {
-            a[i] += cnt;
-            i += nxt;
+        if (op == 1 && cnt == dist || op == 2 && cnt == 0) {
+            yes[i] = yes[i - 1] + 1;
+            cout << "Yes\n";
+        } else {
+            yes[i] = yes[i - 1];
+            cout << "No\n";
         }
-    }
-
-    long long sum[n + 1];
-    sum[0] = 0;
-    for (int i = 1; i <= n; i++)
-        sum[i] = sum[i - 1] + a[i - 1];
-
-    int m;
-    cin >> m;
-    while (m--) {
-        int l, r;
-        cin >> l >> r;
-        cout << sum[r + 1] - sum[l] << '\n';
     }
 }
