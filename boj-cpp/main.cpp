@@ -2,40 +2,25 @@
 
 using namespace std;
 
-struct Dp {
-    int max;
-    int min;
-    int dist;
-    int loc;
-    int time;
-};
-
 int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
     ios_base::sync_with_stdio(false);
 
-    int n;
-    cin >> n;
+    int t, w;
+    cin >> t >> w;
+    int dp[w + 1][t + 1];
+    int pos[t];
+    for (int i = 0; i < t; i++) cin >> pos[i];
 
-    int mn = 0, mx = 0;
-    tuple<int, int, int> data[n];
-    for (int i = 0; i < n; i++) {
-        int a, b, c;
-        cin >> a >> b >> c;
-        data[i] = { a, b, c };
-    }
+    dp[1][0] = pos[1] % 2;
+    dp[1][1] = pos[1] / 2;
 
-    sort(data, data + n);
+    for (int i = 2; i <= t; i++) {
+        for (int j = 0; j <= w; j++) {
+            int tmp = w % 2 == 0 ? pos[t] % 2 : pos[t];
 
-    Dp dp[n + 1][2];
-    dp[0][0] = dp[0][1] = { 0, 0, 0, 0, 0 };
-
-    for (int i = 0; i < n; i++) {
-        auto [t, s, e] = data[i - 1];
-        dp[i + 1][0].time = t;
-        int gap = t - dp[i][0].time;
-
-
+            for ()
+        }
     }
 }
