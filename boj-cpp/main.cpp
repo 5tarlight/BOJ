@@ -2,54 +2,40 @@
 
 using namespace std;
 
+struct Dp {
+    int max;
+    int min;
+    int dist;
+    int loc;
+    int time;
+};
+
 int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
     ios_base::sync_with_stdio(false);
 
-    int n, m;
-    cin >> n >> m;
+    int n;
+    cin >> n;
 
-    vector<int> adj[n + 1][2];
-
-    while (m--) {
-        int s, e, t;
-        cin >> s >> e >> t;
-        adj[s][t].push_back(e);
-        adj[e][t].push_back(s); // 양방향
+    int mn = 0, mx = 0;
+    tuple<int, int, int> data[n];
+    for (int i = 0; i < n; i++) {
+        int a, b, c;
+        cin >> a >> b >> c;
+        data[i] = { a, b, c };
     }
 
-    int a, b;
-    cin >> a >> b;
+    sort(data, data + n);
 
-    vector<vector<int>> dist(n + 1, vector<int>(2, 1e9));
-    deque<pair<int, int>> q;
+    Dp dp[n + 1][2];
+    dp[0][0] = dp[0][1] = { 0, 0, 0, 0, 0 };
 
-    q.push_front({a, 0});
-    q.push_front({a, 1});
-    dist[a][0] = dist[a][1] = 0;
+    for (int i = 0; i < n; i++) {
+        auto [t, s, e] = data[i - 1];
+        dp[i + 1][0].time = t;
+        int gap = t - dp[i][0].time;
 
-    while (!q.empty()) {
-        auto [cur, type] = q.front();
-        q.pop_front();
 
-        for (int nxt : adj[cur][type]) {
-            if (dist[nxt][type] == -1 || dist[nxt][type] > dist[cur][type]) {
-                dist[nxt][type] = dist[cur][type];
-                q.push_front({nxt, type});
-            }
-        }
-
-        for (int nxt : adj[cur][1 - type]) {
-            if (dist[nxt][1 - type] == -1 || dist[nxt][1 - type] > dist[cur][type] + 1) {
-                dist[nxt][1 - type] = dist[cur][type] + 1;
-                q.push_back({nxt, 1 - type});
-            }
-        }
     }
-
-    int answer = min(dist[b][0], dist[b][1]);
-    cout << answer << '\n';
-
-    return 0;
 }
