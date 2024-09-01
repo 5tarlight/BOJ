@@ -1,7 +1,10 @@
-p = list(map(int, input().split()))
-x, _, _ = map(int, input().split())
+st = set()
+n = int(input())
+s = input()
 
-if x in p:
-    print(p.index(x) + 1)
-else:
-    print(0)
+for i in range(n + 1):
+    for ch in 'abcdefghijklmnopqrstuvwxyz':
+        target = s[:i] + ch + s[i:]
+        st.add(target)
+
+print(len(st))
