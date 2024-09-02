@@ -26,5 +26,5 @@ int main() {
     sort(a, a + n);
 
     for (int i = 0; i < n; i++)
-        cout << a[i].second
+        cout << a[i].second << ' ';
 }

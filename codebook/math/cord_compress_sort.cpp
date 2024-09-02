@@ -9,7 +9,7 @@ int main() {
 
     int n;
     cin >> n;
-    pair<int, int> a[n];
+    pair<int, int> a[n]; // { value, index }
     for (int i = 0; i < n; i++) {
         int x;
         cin >> x;
@@ -18,13 +18,19 @@ int main() {
 
     sort(a, a + n);
 
+    int prev = 1e9 + 1;
+    int cnt = -1;
     for (int i = 0; i < n; i++) {
-        a[i].first = i;
+        if (prev != a[i].first)
+            cnt++;
+
+        prev = a[i].first;
+        a[i].first = cnt;
         swap(a[i].first, a[i].second);
     }
 
-    sort(a, a + n);
+    sort(a, a + n); // { index, compressed_index }
 
     for (int i = 0; i < n; i++)
-        cout << a[i].second
+        cout << a[i].second << ' ';
 }
