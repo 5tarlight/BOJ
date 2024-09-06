@@ -1,7 +1,3 @@
-#include "bits/stdc++.h"
-
-using namespace std;
-
 using ll = long long;
 #define LEN 1000001
 #define DIV 1000000007
@@ -43,28 +39,4 @@ void update(int node, int s, int e, int idx, ll val) {
     update(node * 2, s, mid, idx, val);
     update(node * 2 + 1, mid + 1, e, idx, val);
     tree[node] = tree[node * 2] * tree[node * 2 + 1] % DIV;
-}
-
-int main() {
-    int n, m, k;
-    cin >> n >> m >> k;
-    for (int i = 0; i < n; i++)
-        cin >> a[i];
-    m += k;
-
-    init(1, 0, n - 1);
-    while (m--) {
-        int op;
-        cin >> op;
-        if (op == 1) {
-            int idx;
-            ll val;
-            cin >> idx >> val;
-            update(1, 0, n - 1, idx - 1, val);
-        } else {
-            int l, r;
-            cin >> l >> r;
-            cout << query(1, 0, n - 1, l - 1, r - 1) << '\n';
-        }
-    }
 }
