@@ -20,7 +20,7 @@ void init(int node, int s, int e) {
 }
 
 pair<ll, ll> query(int node, int s, int e, int l, int r) {
-    if (e < l || s > r) return {1e9, -1e9};
+    if (e < l || s > r) return { LLONG_MAX, LLONG_MIN };
     if (s >= l && e <= r) return tree[node];
 
     int mid = (s + e) / 2;

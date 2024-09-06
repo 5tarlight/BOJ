@@ -3,6 +3,7 @@ using ll = long long;
 
 ll a[LEN];
 ll tree[4 * LEN];
+ll lazy[4 * LEN];
 
 void init(int node, int s, int e) {
     if (s == e) {
@@ -16,7 +17,19 @@ void init(int node, int s, int e) {
     tree[node] = min(tree[2 * node], tree[2 * node + 1]);
 }
 
+void propagate(int node, int s, int e) {
+    if (lazy[node] != 0) {
+        tree[node] += lazy[node];
+        if (s != e) {
+            lazy[2 * node] += lazy[node];
+            lazy[2 * node + 1] += lazy[node];
+        }
+        lazy[node] = 0;
+    }
+}
+
 ll query(int node, int s, int e, int l, int r) {
+    propagate(node, s, e);
     if (e < l || s > r) return LLONG_MAX;
     if (s >= l && e <= r) return tree[node];
 
@@ -26,16 +39,17 @@ ll query(int node, int s, int e, int l, int r) {
     return min(left, right);
 }
 
-void update(int node, int s, int e, int idx, ll val) {
-    if (idx < s || idx > e) return;
-    if (s == e) {
-        a[idx] = val;
-        tree[node] = val;
+void update(int node, int s, int e, int l, int r, ll val) {
+    propagate(node, s, e);
+    if (e < l || s > r) return;
+    if (s >= l && e <= r) {
+        lazy[node] += val;
+        propagate(node, s, e);
         return;
     }
 
     int mid = (s + e) / 2;
-    update(node * 2, s, mid, idx, val);
-    update(node * 2 + 1, mid + 1, e, idx, val);
+    update(node * 2, s, mid, l, r, val);
+    update(node * 2 + 1, mid + 1, e, l, r, val);
     tree[node] = min(tree[node * 2], tree[node * 2 + 1]);
 }
