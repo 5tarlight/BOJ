@@ -1,7 +1,3 @@
-#include "bits/stdc++.h"
-
-using namespace std;
-
 using ull = unsigned long long;
 
 ull pow(ull x, ull y, ull mod) {
@@ -35,23 +31,10 @@ bool isPrime(ull n) {
     if (n <= 3) return true;
     if (n % 2 == 0 || n % 3 == 0) return false;
 
-    ull a[] = {  2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37 };
+    ull a[] = { 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37 };
     for (ull v : a)
         if (!partialPrime(n, v))
             return false;
 
     return true;
-}
-
-int main() {
-    cin.tie(nullptr);
-    cout.tie(nullptr);
-    ios_base::sync_with_stdio(false);
-
-    int m, n;
-    cin >> m >> n;
-    for (int i = m; i <= n; i++) {
-        if (isPrime(i))
-            cout << i << '\n';
-    }
 }
