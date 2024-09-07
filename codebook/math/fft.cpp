@@ -1,7 +1,3 @@
-#include "bits/stdc++.h"
-
-using namespace std;
-
 using cpx = complex<long double>;
 
 void fft(vector<cpx> &data, bool inverse=false) {
