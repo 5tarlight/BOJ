@@ -1,7 +1,3 @@
-#include <map>
-
-using namespace std;
-
 map<long long, long long> cache;
 
 constexpr long long DIV = 1000000007LL;
