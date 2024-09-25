@@ -1,99 +1,70 @@
 #include "bits/stdc++.h"
-#define MAX 1000001
 
 using namespace std;
 
-struct query {
-    int l, r, idx;
+constexpr int MAX = 100000;
+
+struct Line {
+    long long a, b;
+    double s;
+
+    Line(long long _a, long long _b, double _s = 0)
+        : a(_a), b(_b), s(_s) {}
 };
+
+double cross(const Line &a, const Line &b) {
+    return (double)(a.b - b.b) / (a.a - b.a);
+}
+
+int a[MAX];
+int b[MAX];
+int n;
+vector<Line> s;
+long long dp[MAX];
 
 int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
     ios_base::sync_with_stdio(false);
 
-    int n, m, s;
-    int a[MAX];
-    vector<query> q;
-    int val = 0, l, r;
-    vector<int> ans, cnt;
-
     cin >> n;
-    for (int i = 0; i < n; i++) {
+
+    for (int i = 0; i < n; i++)
         cin >> a[i];
+    for (int i = 0; i < n; i++)
+        cin >> b[i];
+
+    for (int i = 1; i < n; i++) {
+        Line g(b[i - 1], dp[i - 1]);
+
+        while (s.size() >= 1) {
+            g.s = cross(g, s.back());
+
+            if (g.s < s.back().s)
+                s.pop_back();
+            else
+                break;
+        }
+
+        s.push_back(g);
+
+        long long x = a[i];
+        int pos = 0;
+
+        int left = 0;
+        int right = s.size() - 1;
+        while (left <= right) {
+            int mid = (left + right) / 2;
+
+            if (s[mid].s < x) {
+                pos = mid;
+                left = mid + 1;
+            } else
+                right = mid - 1;
+        }
+
+        dp[i] = s[pos].a * x + s[pos].b;
     }
 
-    cin >> m;
-    for (int k = 0; k < m; k++) {
-        int i, j;
-        cin >> i >> j;
-        q.push_back({ i - 1, j - 1, k });
-    }
-
-    auto comp = [&](query a, query b) {
-        if (a.l / s != b.l / s) {
-            return a.l / s < b.l / s;
-        }
-        return a.r < b.r;
-    };
-
-    s = sqrt(n);
-    sort(q.begin(), q.end(), comp);
-    ans.resize(m);
-    cnt.resize(MAX);
-
-    l = q[0].l;
-    r = q[0].r;
-    for (int i = l; i <= r; i++) {
-        if (cnt[a[i]] == 0) {
-            val++;
-        }
-        cnt[a[i]]++;
-    }
-    ans[q[0].idx] = val;
-
-    for (int i = 1; i < m; i++) {
-        int nl = q[i].l;
-        int nr = q[i].r;
-
-        while (nl < l) {
-            l--;
-            if (cnt[a[l]] == 0) {
-                val++;
-            }
-            cnt[a[l]]++;
-        }
-
-        while (nl > l) {
-            cnt[a[l]]--;
-            if (cnt[a[l]] == 0) {
-                val--;
-            }
-            l++;
-        }
-
-        while (nr > r) {
-            r++;
-            if (cnt[a[r]] == 0) {
-                val++;
-            }
-            cnt[a[r]]++;
-        }
-
-        while (nr < r) {
-            cnt[a[r]]--;
-            if (cnt[a[r]] == 0) {
-                val--;
-            }
-            r--;
-        }
-
-        ans[q[i].idx] = val;
-    }
-
-    for (int i = 0; i < m; i++) {
-        cout << ans[i] << "\n";
-    }
-
-    return 0;
+    cout << dp[n - 1];
 }
