@@ -2,54 +2,46 @@
 
 using namespace std;
 
-int N, M;
-vector<vector<char>> board;
-vector<vector<int>> dp;
-vector<vector<bool>> visited;
-int dx[4] = {0, 0, 1, -1};
-int dy[4] = {1, -1, 0, 0};
-
-int dfs(int x, int y) {
-    if (x < 0 || x >= N || y < 0 || y >= M || board[x][y] == 'H') {
-        return 0;
-    }
-
-    if (visited[x][y]) {
-        cout << -1 << endl;
-        exit(0);
-    }
-
-    if (dp[x][y] != -1) {
-        return dp[x][y];
-    }
-
-    visited[x][y] = true;
-    int moves = 0;
-    int step = board[x][y] - '0';
-
-    for (int i = 0; i < 4; i++) {
-        int nx = x + dx[i] * step;
-        int ny = y + dy[i] * step;
-        moves = max(moves, 1 + dfs(nx, ny));
-    }
-
-    visited[x][y] = false;
-    dp[x][y] = moves;
-    return moves;
-}
-
 int main() {
-    cin >> N >> M;
-    board = vector(N, vector<char>(M));
-    dp = vector(N, vector(M, -1));
-    visited = vector(N, vector(M, false));
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    ios_base::sync_with_stdio(false);
 
-    for (int i = 0; i < N; i++) {
-        for (int j = 0; j < M; j++) {
-            cin >> board[i][j];
+    int n, m, k;
+    cin >> n >> m >> k;
+
+    vector<pair<int, int>> adj[n + 1]; // { cost, nxt }
+    while (m--) {
+        int u, v, w;
+        cin >> u >> v >> w;
+        adj[u].push_back({ w, v });
+    }
+
+    int d[n + 1];
+    fill(d, d + n + 1, 1e9);
+    d[k] = 0;
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
+    pq.push({ d[k], k });
+
+    while (!pq.empty()) {
+        auto [cost, cur] = pq.top();
+        pq.pop();
+
+        if (cost > d[cur]) continue;
+
+        for (auto &[nxtCost, nxt]: adj[cur]) {
+            if (cost + nxtCost < d[nxt]) {
+                d[nxt] = cost + nxtCost;
+                pq.push({ d[nxt], nxt });
+            }
         }
     }
 
-    cout << dfs(0, 0);
-    return 0;
+    for (int i = 1; i <= n; i++) {
+        if (d[i] == 1e9)
+            cout << "INF\n";
+        else
+            cout << d[i] << '\n';
+    }
 }

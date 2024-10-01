@@ -1,63 +1,47 @@
-#include <iostream>
-#include <vector>
-#include <algorithm>
-#include <queue>
+#include "bits/stdc++.h"
 
 using namespace std;
 
-#define X first
-#define Y second
-#define INF 1'000'000'010
-
 int main() {
-    ios::sync_with_stdio(false);
     cin.tie(nullptr);
     cout.tie(nullptr);
+    ios_base::sync_with_stdio(false);
 
-    int v, e;
-    cin >> v >> e;
-    int start;
-    cin >> start;
+    int n, m, k;
+    cin >> n >> m >> k;
 
-    vector<pair<int, int>> cost[v + 1]; // {cost, vertex}
-    int d[v + 1];
-    fill(d, d + v + 1, INF);
-    d[start] = 0;
-
-    while (e--) {
+    vector<pair<int, int>> adj[n + 1]; // { cost, nxt }
+    while (m--) {
         int u, v, w;
-        cin >> u >>  v >> w;
-        cost[u].emplace_back(w, v);
+        cin >> u >> v >> w;
+        adj[u].push_back({ w, v });
     }
 
-    priority_queue<
-            pair<int, int>,
-            vector<pair<int, int>>,
-            greater<>
-    > pq;
-    pq.push({d[start], start});
+    int d[n + 1];
+    fill(d, d + n + 1, 1e9);
+    d[k] = 0;
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<>> pq;
+    pq.push({ d[k], k });
 
     while (!pq.empty()) {
-        pair<int, int> cur = pq.top();
+        auto [cost, cur] = pq.top();
         pq.pop();
 
-        if (d[cur.Y] != cur.X)
-            continue;
+        if (cost > d[cur]) continue;
 
-        for (auto &nxt : cost[cur.Y]) {
-            if (d[nxt.Y] <= d[cur.Y] + nxt.X)
-                continue;
-
-            d[nxt.Y] = d[cur.Y] + nxt.X;
-            pq.push({d[nxt.Y], nxt.Y});
+        for (auto &[nxtCost, nxt]: adj[cur]) {
+            if (cost + nxtCost < d[nxt]) {
+                d[nxt] = cost + nxtCost;
+                pq.push({ d[nxt], nxt });
+            }
         }
     }
 
-    for (int i = 1; i <= v; i++) {
-        if (d[i] == INF)
+    for (int i = 1; i <= n; i++) {
+        if (d[i] == 1e9)
             cout << "INF\n";
         else
-            cout << d[i] << "\n";
+            cout << d[i] << '\n';
     }
 }
-
