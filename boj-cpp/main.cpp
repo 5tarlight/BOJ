@@ -2,31 +2,44 @@
 
 using namespace std;
 
+constexpr int MAX = 50000000;
+bool sieve[MAX + 1];
+
 int main() {
     cin.tie(nullptr);
     cout.tie(nullptr);
     ios_base::sync_with_stdio(false);
 
-    int n, m;
-    cin >> n >> m;
-    int a[n];
-    for (int i = 0; i < n; i++)
-        cin >> a[i];
-
-    int tmp[n + 1];
-    fill(tmp, tmp + n + 1, 0);
-    while (m--) {
-        int l, r, k;
-        cin >> l >> r >> k;
-        tmp[l - 1] += k;
-        tmp[r] -= k;
+    fill(sieve, sieve + MAX + 1, true);
+    sieve[0] = sieve[1] = false;
+    for (int i = 2; i * i <= MAX; i++) {
+        if (sieve[i]) {
+            for (int j = 2 * i; j <= MAX; j += i)
+                sieve[j] = false;
+        }
     }
 
-    int sum[n];
-    sum[0] = tmp[0];
-    for (int i = 1; i < n; i++)
-        sum[i] = tmp[i] + sum[i - 1];
+    int n;
+    while (cin >> n) {
+        if (n < 8) {
+            cout << "Impossible.\n";
+            continue;
+        }
 
-    for (int i = 0; i < n; i++)
-        cout << a[i] + sum[i] << ' ';
+        if (n & 1) {
+            cout << "2 3 ";
+            n -= 5;
+        } else {
+            cout << "2 2 ";
+            n -= 4;
+        }
+
+        for (int i = 2; i <= n; i++) {
+            if (!sieve[i]) continue;
+            if (sieve[n - i]) {
+                cout << i << ' ' << n - i << '\n';
+                break;
+            }
+        }
+    }
 }
