@@ -12,30 +12,25 @@ int main() {
     while (t--) {
         int n;
         cin >> n;
-        map<string, int> m;
+        unordered_map<string, int> m;
         for (int i = 0; i < n; i++) {
             string s;
             cin >> s;
             m[s] = i;
         }
 
-        int sec[n];
+        int sol[1000];
         for (int i = 0; i < n; i++) {
             string s;
             cin >> s;
-            sec[i] = m[s];
-        }
-        pair<int, string> p[n];
-
-        for (int i = 0; i < n; i++) {
-            string s;
-            cin >> s;
-            p[i] = { sec[i], s };
+            sol[m[s]] = i;
         }
 
-        sort(p, p + n);
+        string ans[n];
         for (int i = 0; i < n; i++)
-            cout << p[i].second << ' ';
+            cin >> ans[i];
+        for (int i = 0; i < n; i++)
+            cout << ans[sol[i]] << ' ';
         cout << '\n';
     }
 }
