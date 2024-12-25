@@ -16,11 +16,14 @@ int main() {
 
     long long ans = 0;
 
-    int r = n - 1;
-    for (int i = 0; i < n; i++) {
-        while (a[r] + a[i] > s && r > i) r--;
-        if (r <= i) break;
-        ans += r - i;
+    int l = 0, r = n - 1;
+    while (l < r) {
+        if (a[l] + a[r] > s)
+            r--;
+        else {
+            ans += r - l;
+            l++;
+        }
     }
 
     cout << ans;
