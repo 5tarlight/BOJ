@@ -14,4 +14,4 @@ fi
 cp ./boj-cpp/main.cpp ./boj/$1/$2.cpp
 git add .
 git commit -m "$2"
-j
+
