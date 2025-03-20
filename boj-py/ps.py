@@ -1,2 +1,2 @@
-s1 = input()
-s2 = input()
+t, tz = input().split()
+h, m = map(int, t.split(':'))
