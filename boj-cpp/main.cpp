@@ -20,73 +20,7 @@ const string COLOR_RESET = "\033[0m", BRIGHT_GREEN = "\033[1;32m", BRIGHT_RED = 
 #define dbgif(cond, x) ((void)0)
 #endif
 
-int n, ans;
-vector<string> words;
-
-struct Trie {
-  bool end;
-  bool root;
-  int child;
-  Trie *nxt[26];
-
-  Trie(bool root = false) : end(false), root(root), child(0) {
-    memset(nxt, 0, sizeof(nxt));
-  }
-
-  ~Trie() {
-    for (int i = 0; i < 26; i++)
-      delete nxt[i];
-  }
-
-  void insert(const char *key) {
-    if (*key == '\0')
-      end = true;
-    else {
-      int cur = *key - 'a';
-      if (nxt[cur] == NULL) {
-        nxt[cur] = new Trie();
-        child++;
-      }
-
-      nxt[cur]->insert(key + 1);
-    }
-  }
-
-  void find(const char* s) {
-    if (*s == '\0') return;
-
-    int cur = *s - 'a';
-    if (root) ans++;
-    else {
-      if (child > 1 || end) ans++;
-    }
-
-    nxt[cur]->find(s + 1);
-  }
-};
-
 int main() {
-  fast_ios{};
-
-  while (cin >> n) {
-    Trie trie(true);
-    words.clear();
-
-    for (int i = 0; i < n; i++) {
-      string s;
-      cin >> s;
-      words.push_back(s);
-      trie.insert(words[i].c_str());
-    }
-
-    int sum = 0;
-    for (int i = 0; i < words.size(); i++) {
-      ans = 0;
-      trie.find(words[i].c_str());
-      sum += ans;
-    }
-
-    double ret = (double)sum / n;
-    cout << fixed << setprecision(2) << ret << '\n';
-  }
+    
 }
+
