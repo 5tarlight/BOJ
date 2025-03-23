@@ -1,16 +1,15 @@
-n = int(input())
+b, n, m = map(int, input().split())
+p = {}
 
-dp = [-1, -1, -1, 1, -1, 1]
+for _ in range(n):
+    name, price = input().split()
+    p[name] = int(price)
 
-for i in range(6, n + 1):
-    tmp = 10 ** 9
-    if dp[i - 3] != -1:
-        tmp = min(tmp, dp[i - 3] + 1)
-    if dp[i - 5] != -1:
-        tmp = min(tmp, dp[i - 5] + 1)
-    if tmp == 10 ** 9:
-        dp.append(-1)
-    else:
-        dp.append(tmp)
+for _ in range(m):
+    name = input()
+    b -= p[name]
 
-print(dp[n])
+if b >= 0:
+    print("acceptable")
+else:
+    print("unacceptable")
