@@ -1,7 +1,4 @@
-#include "bits/stdc++.h"
-
-using namespace std;
-
+#include <bits/stdc++.h> using namespace std;
 void fio() { cin.tie(nullptr); ios::sync_with_stdio(false); }
 
 template <class OStream, class T> OStream &operator<<(OStream &os, const std::vector<T> &vec) { os << '['; for (auto v : vec) os << v << ','; os << ']'; return os; }
