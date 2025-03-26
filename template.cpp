@@ -11,6 +11,5 @@ template <class OStream, class T, class U> OStream &operator<<(OStream &os, cons
 #endif
 
 int main() {
-  fio();
+    fio();
 }
-
