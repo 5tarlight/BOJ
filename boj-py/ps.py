@@ -1,6 +1,11 @@
-import math
+for _ in range(int(input())):
+    d, n, s, p = map(int, input().split())
+    non = n * s
+    q = d + n * p
 
-d, h, w = map(int, input().split())
-scale = d / math.sqrt(h * h + w * w)
-h, w = math.floor(h * scale), math.floor(w * scale)
-print(h, w)
+    if non == q:
+        print("does not matter")
+    elif non > q:
+        print("parallelize")
+    else:
+        print("do not parallelize")
