@@ -1,6 +1,6 @@
-n = int(input())
+import math
 
-if n in [1, 3, 7, 5, 9]:
-    print(8)
-elif n in [2, 4, 6, 8]:
-    print(0)
+d, h, w = map(int, input().split())
+scale = d / math.sqrt(h * h + w * w)
+h, w = math.floor(h * scale), math.floor(w * scale)
+print(h, w)
