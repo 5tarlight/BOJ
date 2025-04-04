@@ -10,26 +10,35 @@ template <class OStream, class T, class U> OStream &operator<<(OStream &os, cons
 #define dbg(x) ((void)0)
 #endif
 
-vector<int> manacher(const string &s) {
-    string t;
-    t.reserve(s.size()*2+1);
-    for (char c : s) { t.push_back('#'); t.push_back(c); }
-    t.push_back('#');
-    int n = t.size(), center = 0, right = 0;
-    vector<int> p(n, 0);
-    for (int i = 0; i < n; i++) {
-        int mirror = 2 * center - i;
-        if (i < right) p[i] = min(right - i, p[mirror]);
-        while (i - p[i] - 1 >= 0 && i + p[i] + 1 < n && t[i - p[i] - 1] == t[i + p[i] + 1])
-            p[i]++;
-        if (i + p[i] > right) { center = i; right = i + p[i]; }
+vector<int> getPi(const string &p) {
+    int m = p.size(), len = 0;
+    vector<int> pi(m, 0);
+    for (int i = 1; i < m; i++) {
+        while (len && p[i] != p[len]) len = pi[len - 1];
+        if (p[i] == p[len]) len++;
+        pi[i] = len;
     }
-    return p;
+    return pi;
+}
+
+vector<int> kmp(const string &s, const string &p) {
+    vector<int> pi = getPi(p), ans;
+    int n = s.size(), m = p.size(), i = 0, j = 0;
+    while (i < n) {
+        if (s[i] == p[j]) {
+            i++; j++;
+            if (j == m) { ans.push_back(i - j); j = pi[j - 1]; }
+        } else {
+            if (j) j = pi[j - 1];
+            else i++;
+        }
+    }
+    return ans;
 }
 
 int main() {
     fio();
-    string s;
-    cin >> s;
-    dbg(manacher(s));
+    string s, p;
+    cin >> s >> p;
+    dbg(kmp(s, p));
 }
