@@ -1,17 +1,14 @@
-div = 1000000000
-n = int(input())
+a, p = map(int, input().split())
+s = set()
+arr = [a]
 
-dp = [[0] * 10 for _ in range(n)]
+prev = a
+for _ in range(1000):
+    nxt = 0
+    for c in str(prev):
+        nxt += int(c) ** p
 
-for i in range(1, 10):
-    dp[0][i] = 1
+    prev = nxt
+    arr.append(nxt)
 
-for i in range(1, n):
-    for j in range(10):
-        if j < 9:
-            dp[i][j] += dp[i - 1][j + 1]
-        if j > 0:
-            dp[i][j] += dp[i - 1][j - 1]
-        dp[i][j] %= div
-
-print(sum(dp[n - 1]) % div)
+# Find the length of cycle
