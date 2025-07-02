@@ -11,4 +11,3 @@ for _ in range(1000):
     prev = nxt
     arr.append(nxt)
 
-# Find the length of cycle
