@@ -1,29 +1,16 @@
-n, k = map(int, input().split())
+import sys
+input = sys.stdin.readline
 
-a = []
-for _ in range(n):
-    i, g, s, b = map(int, input().split())
-    a.append((-g, -s, -b, i))
-
+n = int(input())
+a = list(map(int, input().split()))
 a.sort()
 
-prev = (-1, -1, -1, -1)
-rank = 0
-tmp = 1
-for i in a:
-    if i[0] == prev[0] and i[1] == prev[1] and i[2] == prev[2]:
-        tmp += 1
+mid = (len(a) + 1) // 2
 
-        if i[3] == k:
-            print(rank)
-            break
+ans = 1
+for i in range(mid):
+    while a[i] > 1:
+        a[i] //= 2
+        ans += 1
 
-        continue
-
-    prev = i
-    rank += tmp
-    tmp = 1
-
-    if i[3] == k:
-        print(rank)
-        break
+print(ans)
