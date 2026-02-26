@@ -1,8 +1,3 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-void fio() { cin.tie(nullptr); cout.tie(nullptr); ios::sync_with_stdio(false); }
-
 typedef long long ll;
 
 pair<ll, pair<ll, ll>> eea(ll a, ll b) {
@@ -17,11 +12,4 @@ ll mod_inv(ll a, ll mod) {
     auto res = eea(a, mod);
     if (res.first != 1) return -1;
     return (res.second.first % mod + mod) % mod;
-}
-
-int main() {
-    fio();
-
-    ll n, a; cin >> n >> a;
-    cout << n - a << ' ' << mod_inv(a, n);
 }
